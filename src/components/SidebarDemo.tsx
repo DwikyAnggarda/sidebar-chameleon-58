@@ -31,7 +31,7 @@ export function SidebarDemo() {
       <div className="flex flex-1 overflow-hidden">
         <SessionNavBar />
         <main className="flex grow flex-col overflow-auto">
-          <div className="p-8 max-w-screen-xl mx-auto w-full">
+          <div className="p-8 pl-16 max-w-screen-xl mx-auto w-full">
             <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
             <p className="text-gray-600 mb-6">
               Welcome to your dashboard. Navigate through the sidebar to explore different sections.
