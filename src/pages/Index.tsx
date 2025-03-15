@@ -1,8 +1,8 @@
 
-import { SidebarDemo } from "@/components/SidebarDemo";
+import { Navigate } from "react-router-dom";
 
 const Index = () => {
-  return <SidebarDemo />;
+  return <Navigate to="/dashboard" replace />;
 };
 
 export default Index;
