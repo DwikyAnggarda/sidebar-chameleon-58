@@ -47,7 +47,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-          <h2 className="text-2xl font-bold mb-2">Access Forbidden {currentPath}</h2>
+          <h2 className="text-2xl font-bold mb-2">Access Forbidden {location.pathname}</h2>
           <p className="mb-4">You don't have permission to access this page.</p>
           <button 
             onClick={() => navigate("/dashboard")}
