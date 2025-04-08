@@ -40,6 +40,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     // Match root path (needed in case of nested route handling)
     return false;
   });
+
+  console.log(isRestrictedPath);
   
   console.log("Current path:", currentPath, "Is restricted:", isRestrictedPath, "User role:", user.role);
   
