@@ -4,6 +4,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Database } from '@/integrations/supabase/types';
 
 type Role = 'admin' | 'customer';
 
@@ -77,7 +78,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
-      setRole(data.role as Role);
+      if (data) {
+        setRole(data.role as Role);
+      }
     } catch (error) {
       console.error('Error in fetchUserRole:', error);
     }
