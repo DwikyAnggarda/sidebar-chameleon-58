@@ -19,30 +19,32 @@ const RoleBasedRoute = ({
   const { role, loading } = useAuth();
   const navigate = useNavigate();
   
+  // Improved role checking logic
   const isRoleForbidden = role && forbiddenRoles.includes(role);
-  const isRoleNotAllowed = allowedRoles.length > 0 && role && !allowedRoles.includes(role);
-  const shouldRedirect = isRoleForbidden || isRoleNotAllowed;
+  const isRoleAllowed = allowedRoles.length === 0 || (role && allowedRoles.includes(role));
+  const hasAccess = !isRoleForbidden && isRoleAllowed;
   
   useEffect(() => {
     console.log("RoleBasedRoute - Current role:", role);
     console.log("RoleBasedRoute - Forbidden roles:", forbiddenRoles);
     console.log("RoleBasedRoute - Allowed roles:", allowedRoles);
-    console.log("RoleBasedRoute - Should redirect:", shouldRedirect);
+    console.log("RoleBasedRoute - Has access:", hasAccess);
     
     // Wait until authentication is complete and then check role
-    if (!loading && shouldRedirect) {
+    if (!loading && !hasAccess) {
       console.log(`Redirecting to ${redirectPath} due to role restrictions`);
       navigate(redirectPath, { replace: true });
     }
-  }, [loading, role, forbiddenRoles, allowedRoles, navigate, redirectPath, shouldRedirect]);
+  }, [loading, role, forbiddenRoles, allowedRoles, navigate, redirectPath, hasAccess]);
 
   // If still loading, return a loading indicator
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
   
-  // If user has a forbidden role or doesn't have an allowed role, redirect immediately
-  if (shouldRedirect) {
+  // If user doesn't have access, redirect immediately
+  if (!hasAccess) {
+    console.log("Access denied - redirecting to forbidden page");
     return <Navigate to={redirectPath} replace />;
   }
   
