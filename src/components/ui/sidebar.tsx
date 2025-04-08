@@ -1,4 +1,3 @@
-
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -90,9 +89,7 @@ export function SessionNavBar({ userRole = null }: SessionNavBarProps) {
   // Check if current user is allowed to see certain menu items
   // According to requirements:
   // - Admin: Show all menu items
-  // - Customer: Hide Accounts, Reports, and Document Review
-  const showAccounts = userRole === 'admin';
-  const showReports = userRole === 'admin';
+  // - Customer: Hide Document Review
   const showReview = userRole === 'admin';
   
   return (
@@ -191,25 +188,23 @@ export function SessionNavBar({ userRole = null }: SessionNavBarProps) {
                       </motion.li>
                     </a>
                     
-                    {showReports && (
-                      <a
-                        href="/reports"
-                        className={cn(
-                          "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
-                          pathname?.includes("reports") &&
-                            "bg-muted text-blue-600"
+                    <a
+                      href="/reports"
+                      className={cn(
+                        "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
+                        pathname?.includes("reports") &&
+                          "bg-muted text-blue-600"
+                      )}
+                    >
+                      <FileClock className="h-4 w-4" />{" "}
+                      <motion.li variants={variants}>
+                        {!isCollapsed && (
+                          <div className="flex items-center gap-2">
+                            <p className="ml-2 text-sm font-medium">Reports</p>
+                          </div>
                         )}
-                      >
-                        <FileClock className="h-4 w-4" />{" "}
-                        <motion.li variants={variants}>
-                          {!isCollapsed && (
-                            <div className="flex items-center gap-2">
-                              <p className="ml-2 text-sm font-medium">Reports</p>
-                            </div>
-                          )}
-                        </motion.li>
-                      </a>
-                    )}
+                      </motion.li>
+                    </a>
                     
                     <a
                       href="/chat"
@@ -251,23 +246,21 @@ export function SessionNavBar({ userRole = null }: SessionNavBarProps) {
                       </motion.li>
                     </a>
                     
-                    {showAccounts && (
-                      <a
-                        href="/accounts"
-                        className={cn(
-                          "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
-                          pathname?.includes("accounts") &&
-                            "bg-muted text-blue-600"
+                    <a
+                      href="/accounts"
+                      className={cn(
+                        "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
+                        pathname?.includes("accounts") &&
+                          "bg-muted text-blue-600"
+                      )}
+                    >
+                      <UserCircle className="h-4 w-4" />{" "}
+                      <motion.li variants={variants}>
+                        {!isCollapsed && (
+                          <p className="ml-2 text-sm font-medium">Accounts</p>
                         )}
-                      >
-                        <UserCircle className="h-4 w-4" />{" "}
-                        <motion.li variants={variants}>
-                          {!isCollapsed && (
-                            <p className="ml-2 text-sm font-medium">Accounts</p>
-                          )}
-                        </motion.li>
-                      </a>
-                    )}
+                      </motion.li>
+                    </a>
                     
                     <a
                       href="/competitors"
