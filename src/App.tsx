@@ -19,6 +19,9 @@ import Integrations from "./pages/Integrations";
 import SelectOrg from "./pages/SelectOrg";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import { AuthProvider } from "./context/AuthContext";
+import Signup from "./pages/Signup";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -28,25 +31,27 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/deals" element={<Deals />} />
-          <Route path="/accounts" element={<Accounts />} />
-          <Route path="/competitors" element={<Competitors />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/library/knowledge" element={<Knowledge />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/review" element={<Review />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/integrations" element={<Integrations />} />
-          <Route path="/select-org" element={<SelectOrg />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            <Route path="/deals" element={<ProtectedRoute><Deals /></ProtectedRoute>} />
+            <Route path="/accounts" element={<ProtectedRoute><Accounts /></ProtectedRoute>} />
+            <Route path="/competitors" element={<ProtectedRoute><Competitors /></ProtectedRoute>} />
+            <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+            <Route path="/library/knowledge" element={<ProtectedRoute><Knowledge /></ProtectedRoute>} />
+            <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
+            <Route path="/review" element={<ProtectedRoute><Review /></ProtectedRoute>} />
+            <Route path="/members" element={<ProtectedRoute><Members /></ProtectedRoute>} />
+            <Route path="/integrations" element={<ProtectedRoute><Integrations /></ProtectedRoute>} />
+            <Route path="/select-org" element={<ProtectedRoute><SelectOrg /></ProtectedRoute>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

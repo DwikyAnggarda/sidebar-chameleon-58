@@ -5,17 +5,15 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Separator } from "@/components/ui/separator";
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  const { signIn, signInWithGoogle, user, loading } = useAuth();
+  const { signUp, signInWithGoogle, user, loading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,9 +23,9 @@ const Login = () => {
     }
 
     try {
-      await signIn(email, password);
+      await signUp(email, password);
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Signup error:", error);
     }
   };
 
@@ -40,14 +38,14 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/50 p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold">Welcome back</h1>
-          <p className="text-muted-foreground mt-2">Log in to access your account</p>
+          <h1 className="text-3xl font-bold">Create your account</h1>
+          <p className="text-muted-foreground mt-2">Sign up to get started</p>
         </div>
         
         <Card className="border-muted/30 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-xl">Login</CardTitle>
-            <CardDescription>Enter your credentials to continue</CardDescription>
+            <CardTitle className="text-xl">Sign up</CardTitle>
+            <CardDescription>Enter your details to create an account</CardDescription>
           </CardHeader>
           
           <form onSubmit={handleSubmit}>
@@ -70,12 +68,7 @@ const Login = () => {
               </div>
               
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
-                  <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                    Forgot password?
-                  </Link>
-                </div>
+                <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input 
@@ -86,7 +79,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                   />
                   <Button 
                     type="button"
@@ -99,21 +92,7 @@ const Login = () => {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <Checkbox 
-                  id="remember" 
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked === true)}
-                  disabled={loading}
-                />
-                <label
-                  htmlFor="remember"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Remember me
-                </label>
+                <p className="text-xs text-muted-foreground">Password must be at least 6 characters long</p>
               </div>
             </CardContent>
             
@@ -123,7 +102,7 @@ const Login = () => {
                 className="w-full" 
                 disabled={loading}
               >
-                {loading ? "Logging in..." : "Log in"}
+                {loading ? "Signing up..." : "Sign up"}
               </Button>
               
               <div className="relative w-full">
@@ -151,9 +130,9 @@ const Login = () => {
               </Button>
               
               <div className="text-center text-sm">
-                Don't have an account?{" "}
-                <Link to="/signup" className="text-primary font-medium hover:underline">
-                  Sign up
+                Already have an account?{" "}
+                <Link to="/login" className="text-primary font-medium hover:underline">
+                  Log in
                 </Link>
               </div>
             </CardFooter>
@@ -164,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

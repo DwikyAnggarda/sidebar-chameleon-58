@@ -32,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/context/AuthContext";
 
 const sidebarVariants = {
   open: {
@@ -77,10 +78,22 @@ const staggerVariants = {
   },
 };
 
-export function SessionNavBar() {
+type SessionNavBarProps = {
+  userRole?: string | null;
+};
+
+export function SessionNavBar({ userRole = null }: SessionNavBarProps) {
   const [isCollapsed, setIsCollapsed] = useState(true);
-  // Since we're not using Next.js, we'll create a simple pathname hook
   const [pathname, setPathname] = useState(window.location.pathname);
+  const { signOut } = useAuth();
+  
+  // Check if current user is allowed to see certain menu items
+  // According to requirements:
+  // - Admin: Show all menu items
+  // - Customer: Hide Accounts, Reports, and Document Review
+  const showAccounts = userRole === 'admin';
+  const showReports = userRole === 'admin';
+  const showReview = userRole === 'admin';
   
   return (
     <motion.div
@@ -177,23 +190,27 @@ export function SessionNavBar() {
                         )}
                       </motion.li>
                     </a>
-                    <a
-                      href="/reports"
-                      className={cn(
-                        "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
-                        pathname?.includes("reports") &&
-                          "bg-muted text-blue-600"
-                      )}
-                    >
-                      <FileClock className="h-4 w-4" />{" "}
-                      <motion.li variants={variants}>
-                        {!isCollapsed && (
-                          <div className="flex items-center gap-2">
-                            <p className="ml-2 text-sm font-medium">Reports</p>
-                          </div>
+                    
+                    {showReports && (
+                      <a
+                        href="/reports"
+                        className={cn(
+                          "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
+                          pathname?.includes("reports") &&
+                            "bg-muted text-blue-600"
                         )}
-                      </motion.li>
-                    </a>
+                      >
+                        <FileClock className="h-4 w-4" />{" "}
+                        <motion.li variants={variants}>
+                          {!isCollapsed && (
+                            <div className="flex items-center gap-2">
+                              <p className="ml-2 text-sm font-medium">Reports</p>
+                            </div>
+                          )}
+                        </motion.li>
+                      </a>
+                    )}
+                    
                     <a
                       href="/chat"
                       className={cn(
@@ -233,21 +250,25 @@ export function SessionNavBar() {
                         )}
                       </motion.li>
                     </a>
-                    <a
-                      href="/accounts"
-                      className={cn(
-                        "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
-                        pathname?.includes("accounts") &&
-                          "bg-muted text-blue-600"
-                      )}
-                    >
-                      <UserCircle className="h-4 w-4" />{" "}
-                      <motion.li variants={variants}>
-                        {!isCollapsed && (
-                          <p className="ml-2 text-sm font-medium">Accounts</p>
+                    
+                    {showAccounts && (
+                      <a
+                        href="/accounts"
+                        className={cn(
+                          "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
+                          pathname?.includes("accounts") &&
+                            "bg-muted text-blue-600"
                         )}
-                      </motion.li>
-                    </a>
+                      >
+                        <UserCircle className="h-4 w-4" />{" "}
+                        <motion.li variants={variants}>
+                          {!isCollapsed && (
+                            <p className="ml-2 text-sm font-medium">Accounts</p>
+                          )}
+                        </motion.li>
+                      </a>
+                    )}
+                    
                     <a
                       href="/competitors"
                       className={cn(
@@ -298,23 +319,26 @@ export function SessionNavBar() {
                         )}
                       </motion.li>
                     </a>
-                    <a
-                      href="/review"
-                      className={cn(
-                        "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
-                        pathname?.includes("review") &&
-                          "bg-muted text-blue-600"
-                      )}
-                    >
-                      <FileClock className="h-4 w-4" />{" "}
-                      <motion.li variants={variants}>
-                        {!isCollapsed && (
-                          <p className="ml-2 text-sm font-medium">
-                            Document Review
-                          </p>
+                    
+                    {showReview && (
+                      <a
+                        href="/review"
+                        className={cn(
+                          "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary",
+                          pathname?.includes("review") &&
+                            "bg-muted text-blue-600"
                         )}
-                      </motion.li>
-                    </a>
+                      >
+                        <FileClock className="h-4 w-4" />{" "}
+                        <motion.li variants={variants}>
+                          {!isCollapsed && (
+                            <p className="ml-2 text-sm font-medium">
+                              Document Review
+                            </p>
+                          )}
+                        </motion.li>
+                      </a>
+                    )}
                   </div>
                 </ScrollArea>
               </div>
@@ -379,6 +403,7 @@ export function SessionNavBar() {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="flex items-center gap-2"
+                        onClick={() => signOut()}
                       >
                         <LogOut className="h-4 w-4" /> Sign out
                       </DropdownMenuItem>
