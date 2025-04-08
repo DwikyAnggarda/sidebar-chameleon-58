@@ -29,9 +29,19 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
   
   // Check if user is a customer and trying to access restricted paths
-  const isRestrictedPath = restrictedForCustomers.some(path => 
-    location.pathname.startsWith(path)
-  );
+  const currentPath = location.pathname;
+  
+  // More precise path matching logic
+  const isRestrictedPath = restrictedForCustomers.some(path => {
+    // Exact match
+    if (currentPath === path) return true;
+    // Match path followed by slash and anything else (/reports/, /reports/123)
+    if (currentPath.startsWith(path + '/')) return true;
+    // Match root path (needed in case of nested route handling)
+    return false;
+  });
+  
+  console.log("Current path:", currentPath, "Is restricted:", isRestrictedPath, "User role:", user.role);
   
   if (user.role === "customer" && isRestrictedPath) {
     return (
