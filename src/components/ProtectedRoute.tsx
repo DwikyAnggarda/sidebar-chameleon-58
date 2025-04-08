@@ -42,6 +42,8 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   });
 
   console.log(isRestrictedPath);
+
+  return false;
   
   console.log("Current path:", currentPath, "Is restricted:", isRestrictedPath, "User role:", user.role);
   
