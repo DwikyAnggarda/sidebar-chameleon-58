@@ -38,12 +38,16 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            {/* <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} /> */}
+            <Route path="/dashboard" element={<RoleBasedRoute forbiddenRoles={["customer"]}><Dashboard /></RoleBasedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-            <Route path="/reports" element={<RoleBasedRoute forbiddenRoles={["customer"]}><Reports /></RoleBasedRoute>} />
+            <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            {/* <Route path="/reports" element={<RoleBasedRoute forbiddenRoles={["customer"]}><Reports /></RoleBasedRoute>} /> */}
             <Route path="/deals" element={<ProtectedRoute><Deals /></ProtectedRoute>} />
-            <Route path="/accounts" element={<RoleBasedRoute forbiddenRoles={["customer"]}><Accounts /></RoleBasedRoute>} />
-            <Route path="/competitors" element={<ProtectedRoute><Competitors /></ProtectedRoute>} />
+            <Route path="/accounts" element={<ProtectedRoute><Accounts /></ProtectedRoute>} />
+            {/* <Route path="/accounts" element={<RoleBasedRoute forbiddenRoles={["customer"]}><Accounts /></RoleBasedRoute>} /> */}
+            {/* <Route path="/competitors" element={<ProtectedRoute><Competitors /></ProtectedRoute>} /> */}
+            <Route path="/competitors" element={<RoleBasedRoute forbiddenRoles={["customer"]}><Competitors /></RoleBasedRoute>} />
             <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
             <Route path="/library/knowledge" element={<ProtectedRoute><Knowledge /></ProtectedRoute>} />
             <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
