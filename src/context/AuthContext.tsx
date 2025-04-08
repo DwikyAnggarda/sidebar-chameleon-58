@@ -122,7 +122,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signInWithGoogle = async () => {
     try {
       setLoading(true);
-      const { error } = await supabase.auth.signInWithOAuth({
+      toast.info('Connecting to Google authentication...');
+      
+      console.log('Attempting to sign in with Google...');
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/dashboard`,
@@ -130,16 +133,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       if (error) {
+        console.error('Google sign in error details:', error);
+        
         if (error.message.includes('provider is not enabled')) {
           toast.error('Google authentication is not enabled. Please enable it in the Supabase dashboard.');
           console.error('Google provider not enabled. Please configure it in your Supabase project.');
         } else {
-          toast.error(error.message);
+          toast.error(`Google sign in error: ${error.message}`);
         }
         throw error;
       }
+      
+      if (data) {
+        console.log('Google sign in initiated successfully, awaiting redirect');
+      }
     } catch (error) {
       console.error('Google sign in error:', error);
+      toast.error('Failed to connect to Google. Please try again later.');
     } finally {
       setLoading(false);
     }
